@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+/* 확정 시안 "C + B · 보드 메인 + 매트릭스 탭" 의 색상 토큰 */
+:root {
+  --background: #f2f0f9;
+  --foreground: #1c1930;
+  --surface: #ffffff;
+  --muted: #5e5a72;
+  --line: #e2def0;
+
+  --brand: #6a45f0;
+  --brand-deep: #2b1a66;
+  --brand-soft: #eeeaff;
+
+  --status-done: #5b3fd9;
+  --status-progress: #e9e4ff;
+  --status-progress-fg: #4630b0;
+  --status-inactive: #ecebf0;
+  --status-inactive-fg: #4f4c5c;
+  --status-check: #ffe7d1;
+  --status-check-fg: #8a4200;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-brand: var(--brand);
+  --color-brand-deep: var(--brand-deep);
+  --color-brand-soft: var(--brand-soft);
+  --color-status-done: var(--status-done);
+  --color-status-progress: var(--status-progress);
+  --color-status-progress-fg: var(--status-progress-fg);
+  --color-status-inactive: var(--status-inactive);
+  --color-status-inactive-fg: var(--status-inactive-fg);
+  --color-status-check: var(--status-check);
+  --color-status-check-fg: var(--status-check-fg);
+  --font-sans: var(--font-gothic-a1), system-ui, sans-serif;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}

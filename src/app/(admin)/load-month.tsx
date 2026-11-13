@@ -36,6 +36,9 @@ export type MonthData = {
   isSample: boolean;
 };
 
+/** Supabase 기본 max_rows 와 같게 둔다. 서버 값이 더 작으면 첫 페이지에서 멈추므로 키우지 않는다. */
+const FACTS_PAGE_SIZE = 1000;
+
 function monthInfo(key: string, prev: string | null, next: string | null): MonthInfo {
   const [y, m] = key.split("-").map(Number);
   const last = new Date(Date.UTC(y, m, 0)).getUTCDate();
@@ -79,12 +82,22 @@ export async function loadMonth(
   const key = typeof monthParam === "string" && kstMonthRange(monthParam) ? monthParam : thisMonth;
   const range = kstMonthRange(key)!;
 
-  const { data, error } = await supabase.rpc("monitor_playback_facts", { p_from: range.from, p_to: range.to });
-  if (error) {
-    return { error: error.code === "42501" ? "not_admin" : "failed", message: error.message };
+  // Supabase(PostgREST)는 한 번에 최대 1000행(max_rows)만 돌려주고 잘린 걸 알리지 않는다.
+  // 함수가 started_at, playback_id 순으로 정렬하므로 범위를 넘기며 끝까지 받는다.
+  const rows: PlaybackFactRow[] = [];
+  for (let offset = 0; ; offset += FACTS_PAGE_SIZE) {
+    const { data, error } = await supabase
+      .rpc("monitor_playback_facts", { p_from: range.from, p_to: range.to })
+      .range(offset, offset + FACTS_PAGE_SIZE - 1);
+    if (error) {
+      return { error: error.code === "42501" ? "not_admin" : "failed", message: error.message };
+    }
+    const page = (data ?? []) as PlaybackFactRow[];
+    rows.push(...page);
+    if (page.length < FACTS_PAGE_SIZE) break;
   }
 
-  const { facts, songTitle } = factsFromRows((data ?? []) as PlaybackFactRow[]);
+  const { facts, songTitle } = factsFromRows(rows);
   const next = shiftMonth(key, 1);
   return {
     facts,

@@ -1,6 +1,6 @@
 # PROGRESS
 
-_Snapshot — 2026-11-03. 갱신 시 덮어쓴다._
+_Snapshot — 2026-11-13. 갱신 시 덮어쓴다._
 
 ## Current Phase
 
@@ -15,6 +15,7 @@ Phase 1 — 저작권 · 미션 탭 동작 중, 공지 탭 구현 (SQL · env �
 - Next.js 16 + Supabase + Vitest 스택 셋업 ([TASK-000](tasks/completed/TASK-000-stack-setup.md))
 - 저작권 탭: 재생 현황 · 재생 기록 · 정산 · 파일, 관리자 로그인, DB 함수 2개 (사용자가 실행함)
 - 미션 탭 + 엑셀 받기 ([TASK-003](tasks/completed/TASK-003-mission-progress.md), PR #2)
+- 재생 현황 · 정산: 한 달 재생 1000건에서 잘리던 문제 수정 — `load-month.tsx` 가 1000행씩 나눠 받음 (로컬에서 11월 1,400건 = DB 확인)
 - 공지 탭 코드: `src/lib/notices.ts`, `src/app/(admin)/notices/`, `supabase/monitor_notices.sql`, 메뉴 `공지`, `.env.example` 링크 2개
 
 ## In Progress
